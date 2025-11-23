@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CreditCore - Bank of the Future</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons for UI elements -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+        /* --- RESET & VARIABLES --- */
+        :root {
+            --font-family: 'Inter', sans-serif;
+            
+            /* Palette */
+            --color-lime: #d3f36b; 
+            --color-lime-light: #e9f8b3;
+            --color-dark-green: #0b3928; 
+            --color-darker-green: #06251a;
+            --color-white: #ffffff;
+            --color-off-white: #f2fff5;
+            --color-black: #111111;
+            --color-text-gray: #555555;
+            --color-border: #e0e0e0;
+            
+            --radius-sm: 3px;
+            --radius-md: 15px;
+            --radius-lg: 20px;
+            --radius-xl: 30px;
+            
+            --container-width: 1200px;
+            --spacing-section: clamp(60px, 8vw, 100px); /* Responsive spacing */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: var(--font-family);
+            color: var(--color-black);
+            background-color: var(--color-white);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        img { max-width: 100%; height: auto; display: block; }
+
+        /* --- UTILITIES --- */
+        .container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 24px;
+            width: 100%;
+        }
+
+        .section {
+            padding: var(--spacing-section) 0;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 28px;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 15px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s;
+            cursor: pointer;
+            border: none;
+            white-space: nowrap;
+        }
+
+        .btn:active { transform: scale(0.98); }
+
+        .btn-primary {
+            background-color: var(--color-black);
+            color: var(--color-white);
+        }
+        
+        .btn-primary:hover { background-color: #333; }
+
+        .btn-secondary {
+            background-color: var(--color-white);
+            color: var(--color-black);
+            border: 1px solid var(--color-border);
+        }
+
+        .btn-secondary:hover { border-color: var(--color-black); }
+
+        .btn-lime {
+            background-color: var(--color-lime);
+            color: var(--color-dark-green);
+        }
+        .btn-lime:hover { background-color: #c2e650; }
+
+        .badge {
+            display: inline-block;
+            background-color: var(--color-lime-light);
+            color: var(--color-dark-green);
+            padding: 6px 12px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        h1, h2, h3, h4 { font-weight: 600; line-height: 1.1; }
+        
+        /* Fluid Typography */
+        h1 { font-size: clamp(40px, 6vw + 1rem, 69px); letter-spacing: -0.05em; }
+        h2 { font-size: clamp(32px, 5vw + 1rem, 62px); letter-spacing: -0.05em; }
+        h3 { font-size: clamp(24px, 3vw + 1rem, 38px); letter-spacing: -0.03em; }
+        
+        .text-center h2 { text-align: center; font-weight: 600;}
+        .mx-auto { margin-left: auto; margin-right: auto; }
+        .text-gray { color: var(--color-text-gray); }
+
+        /* --- HEADER --- */
+        .main-header {
+            padding: 10px 0;
+            position: sticky;
+            top: 0;
+            background: rgb(255, 255, 255);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 1002; /* Above mobile menu */
+            position: relative;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            color: var(--color-text-gray);
+            font-size: 15px;
+            transition: color 0.2s;
+        }
+        .nav-link:hover { color: var(--color-black); }
+
+        .nav-actions {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            z-index: 1002; /* Above mobile menu */
+        }
+
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 1002;
+            padding: 5px;
+        }
+        
+        .menu-toggle i { font-size: 28px; color: var(--color-black); }
+
+        /* --- HERO SECTION --- */
+        .hero-section {
+            background-color: var(--color-off-white);
+            padding-top: clamp(40px, 8vw, 80px);
+            padding-bottom: clamp(60px, 8vw, 80px);
+            overflow: hidden;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(40px, 5vw, 60px);
+            align-items: center;
+        }
+
+        .hero-content h1 { margin-bottom: 24px; }
+
+        .hero-content p {
+            font-size: clamp(16px, 2vw, 18px);
+            color: var(--color-text-gray);
+            margin-bottom: 32px;
+            max-width: 450px;
+        }
+
+        .hero-cta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .trust-rating {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .stars { color: #FFD700; display: flex; }
+
+        .hero-visual {
+            position: relative;
+            height: clamp(300px, 40vw, 500px);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            width: 100%;
+        }
+        
+        .hero-visual img,
+        .split-visual img,
+        .phone-center img,
+        .faq-visual img,
+        .card-visual-mock img,
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* --- FEATURES SECTION --- */
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto clamp(40px, 6vw, 60px);
+        }
+
+        .section-header h2 { margin-bottom: 16px; }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .feature-card {
+            background: var(--color-off-white);
+            padding: 32px;
+            border-radius: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover { transform: translateY(-5px); }
+
+        .feature-icon {
+            width: 90px;
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 { margin-bottom: 10px; }
+        .feature-card p { color: var(--color-text-gray); font-size: 16px; line-height: 1.6; }
+
+        /* --- SERVICES (DARK) SECTION --- */
+        .dark-services {
+            background-color: var(--color-dark-green);
+            color: var(--color-white);
+            padding: var(--spacing-section) 0;
+        }
+
+        .dark-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            grid-template-rows: auto auto;
+            gap: 24px;
+        }
+
+        .service-info {
+            grid-column: 1 / 2;
+            grid-row: 1 / 2;
+            padding-right: 40px;
+            align-self: center;
+        }
+        
+        .service-info h2 { margin-bottom: 20px; color: var(--color-lime); }
+        .service-info p { color: rgba(255,255,255,0.7); font-size: 18px; margin-bottom: 30px; }
+
+        /* Bento Grid Layout */
+        .bento-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .bento-card.lime {
+            background: linear-gradient(135deg, #2d5c47 0%, #1a4231 100%);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .bento-card.glow {
+            background: linear-gradient(135deg, var(--color-lime) 0%, #8BC34A 100%);
+            color: var(--color-dark-green);
+        }
+        
+        /* Layout Assignments */
+        .bento-lg { grid-column: 2 / 3; grid-row: 1 / 3; min-height: 500px;}
+        .bento-sm-1 { grid-column: 1 / 2; grid-row: 2 / 3; display: flex; flex-direction: row; align-items: center; gap: 20px; min-height: 200px;}
+
+        .card-visual-mock {
+            margin-top: auto;
+            height: 250px;
+            border-radius: 12px;
+            width: 100%;
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.1);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        /* --- BUSINESS SPLIT SECTION --- */
+        .split-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(40px, 6vw, 80px);
+            align-items: center;
+            padding: var(--spacing-section) 0;
+        }
+        
+        /* Reorder logic for mobile: Visual first, then content, or vice versa */
+        .split-section.reverse .split-visual { order: 1; }
+        .split-section.reverse .split-content { order: 2; }
+
+        .split-content h2 { margin-bottom: 20px; }
+        .split-content p { font-size: 17px; color: var(--color-text-gray); margin-bottom: 30px; }
+
+        .split-visual {
+            background: var(--color-lime-light);
+            border-radius: var(--radius-lg);
+            height: clamp(300px, 50vw, 450px);
+            width: 100%;
+            overflow: hidden;
+        }
+
+        /* --- TESTIMONIALS --- */
+        .testimonials { background-color: var(--color-off-white); }
+        
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .test-card {
+            background: white;
+            padding: 30px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .quote-icon { font-size: 32px; color: var(--color-lime); margin-bottom: 16px; }
+        .test-text { font-size: clamp(18px, 2vw, 24px); margin-bottom: 24px; flex-grow: 1; line-height: 1.4; font-weight: 500;}
+        
+        .user-profile { display: flex; align-items: center; gap: 12px; }
+        .avatar { 
+            width: 40px; height: 40px; 
+            background: #ddd; border-radius: 50%; overflow: hidden; 
+            flex-shrink: 0;
+        }
+        
+        .user-info h5 { font-size: 14px; font-weight: 700; }
+        .user-info span { font-size: 12px; color: var(--color-text-gray); }
+
+        /* --- STATS / WALLET SECTION --- */
+        .stats-container {
+            border-radius: var(--radius-lg);
+            /* Instead of strict padding, use relative */
+            padding: clamp(30px, 5vw, 60px);
+            display: grid;
+            grid-template-columns: 1fr 340px 1fr;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .stat-column { display: flex; flex-direction: column; gap: clamp(30px, 4vw, 50px); }
+        .stat-item h3 { font-size: clamp(48px, 6vw, 78px); color: var(--color-dark-green); margin-bottom: 4px; line-height: 1; }
+        .stat-item p.label { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: var(--color-text-gray); font-weight: 600; margin-bottom: 8px; }
+        .stat-item p.desc { font-size: 15px; line-height: 1.5; }
+
+        .phone-center {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            aspect-ratio: 9/18;
+            background: #111;
+            border-radius: 40px;
+            border: 8px solid #111;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            margin: 0 auto;
+        }
+
+        /* --- FAQ SECTION --- */
+        .faq-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(30px, 5vw, 60px);
+        }
+
+        .accordion-item { border-bottom: 1px solid var(--color-border); padding: 24px 0; }
+
+        .accordion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-size: clamp(18px, 2vw, 22px);
+            font-weight: 600;
+        }
+
+        .accordion-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            color: var(--color-text-gray);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .accordion-item.active .accordion-body { max-height: 300px; padding-top: 16px; }
+        .accordion-icon { transition: transform 0.3s ease; flex-shrink: 0;}
+        .accordion-item.active .accordion-icon { transform: rotate(45deg); }
+
+        .faq-visual {
+            background: var(--color-lime-light);
+            border-radius: var(--radius-lg);
+            height: 100%;
+            min-height: 300px;
+            overflow: hidden;
+        }
+
+        /* --- CTA BANNER --- */
+        .cta-banner {
+            background: var(--color-dark-green);
+            border-radius: var(--radius-lg);
+            padding: clamp(40px, 8vw, 80px);
+            text-align: center;
+            color: white;
+            margin-bottom: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-banner h2 { margin-bottom: 20px; position: relative; z-index: 2; }
+        .cta-banner p { position: relative; z-index: 2; font-size: clamp(16px, 2vw, 20px); margin-bottom: 30px; }
+        .cta-banner::before {
+            content: ''; position: absolute; top: -50%; left: -20%; width: 50%; height: 200%;
+            background: radial-gradient(circle, rgba(211, 243, 107, 0.1) 0%, transparent 70%);
+            z-index: 1;
+        }
+
+        /* --- FOOTER --- */
+        .site-footer {
+            background-color: var(--color-off-white);
+            padding-top: 60px;
+            padding-bottom: 40px;
+            border-top: 1px solid var(--color-border);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr repeat(4, 1fr);
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .footer-brand p { margin-top: 20px; color: var(--color-text-gray); max-width: 250px; }
+        .footer-col h4 { margin-bottom: 20px; font-size: 16px; color: var(--color-black); }
+        .footer-col ul li { margin-bottom: 12px; }
+        .footer-col a { color: var(--color-text-gray); font-size: 14px; transition: color 0.2s; }
+        .footer-col a:hover { color: var(--color-lime); }
+
+        .footer-bottom {
+            border-top: 1px solid var(--color-border);
+            padding-top: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: space-between;
+            font-size: 14px;
+            color: var(--color-text-gray);
+        }
+        
+        .designer-credit { font-weight: 600; color: var(--color-dark-green); }
+
+        /* --- RESPONSIVE MEDIA QUERIES --- */
+        
+        /* Tablet / Small Desktop */
+        @media (max-width: 1024px) {
+            .hero-grid, .split-section, .faq-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .hero-content { text-align: center; }
+            .hero-content p { margin-left: auto; margin-right: auto; }
+            .hero-cta { justify-content: center; }
+
+            .split-section.reverse .split-visual { order: -1; } /* Standard stacking on mobile */
+            .split-section.reverse .split-content { order: 1; }
+
+            .dark-grid {
+                display: flex;
+                flex-direction: column;
+            }
+            
+            .service-info { padding-right: 0; text-align: center; margin-bottom: 40px; }
+            .bento-lg { min-height: 400px; }
+            
+            .stats-container {
+                grid-template-columns: 1fr 1fr; 
+                grid-template-rows: auto auto;
+                gap: 30px;
+            }
+            .phone-center {
+                grid-column: 1 / -1;
+                grid-row: 2;
+                max-width: 250px;
+                order: 2; /* Phone in middle visually? No, let's put it bottom or top. */
+            }
+            /* Better Mobile Stats: Column 1, Column 2, then Phone at bottom (or hidden if really cramped, but let's keep it) */
+            
+            .footer-grid {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+            .footer-brand { grid-column: 1 / -1; margin-bottom: 20px; }
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            /* Header Mobile Nav */
+            .menu-toggle { display: block; }
+            
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--color-white);
+                flex-direction: column;
+                padding: 20px;
+                gap: 20px;
+                border-bottom: 1px solid rgba(0,0,0,0.05);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+                
+                /* Hiding logic */
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(-10px);
+                transition: all 0.3s ease;
+            }
+
+            .nav-links.active {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+            }
+
+            .nav-actions { display: none; } /* Hide buttons on small mobile, or move inside nav-links via JS if needed */
+            
+            /* Show a simple "Login" inside the list if needed, or just hide for this demo to keep it clean */
+            
+            /* Grids to Single Column */
+            .features-grid, .testimonial-grid, .stats-container, .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-container { text-align: center; }
+            .stat-column { align-items: center; }
+            .phone-center { grid-row: auto; margin-top: 30px; }
+
+            .bento-sm-1 { flex-direction: column; text-align: center; padding: 40px 20px; }
+
+            /* Footer Stacking */
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .footer-bottom { flex-direction: column; align-items: center; text-align: center; }
+        }
+
+        /* Small Mobile */
+        @media (max-width: 480px) {
+            .footer-grid { grid-template-columns: 1fr; text-align: center; }
+            .footer-brand { align-items: center; display: flex; flex-direction: column; }
+            
+            .btn { width: 100%; }
+            .hero-cta { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <header class="main-header">
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 26 26" fill="#008051"><g fill="#008051" fill-rule="evenodd" clip-rule="evenodd"><path d="M13 5.682L6.938 9.5h12.124L13 5.682Zm.267-1.014a.5.5 0 0 0-.533 0L4.939 9.577c-.424.267-.235.923.267.923h15.588c.502 0 .691-.656.267-.923l-7.794-4.91ZM5 20a.5.5 0 0 1 .5-.5h15a.5.5 0 0 1 0 1h-15A.5.5 0 0 1 5 20Zm1.5-8.5a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0v-6a.5.5 0 0 1 .5-.5Zm3 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0v-6a.5.5 0 0 1 .5-.5Zm3 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0v-6a.5.5 0 0 1 .5-.5Zm3 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0v-6a.5.5 0 0 1 .5-.5Z"/><path d="M13 24.5c6.351 0 11.5-5.149 11.5-11.5S19.351 1.5 13 1.5S1.5 6.649 1.5 13S6.649 24.5 13 24.5Zm0 1c6.904 0 12.5-5.596 12.5-12.5S19.904.5 13 .5S.5 6.096.5 13S6.096 25.5 13 25.5Z"/></g></svg>
+                CreditCore
+            </a>
+            
+            <button class="menu-toggle" onclick="toggleMenu()">
+                <i class="ph ph-list"></i>
+            </button>
+
+            <nav>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#features" class="nav-link" onclick="toggleMenu()">Features</a></li>
+                    <li><a href="#services" class="nav-link" onclick="toggleMenu()">Services</a></li>
+                    <li><a href="#business" class="nav-link" onclick="toggleMenu()">Business</a></li>
+                    <li><a href="#pricing" class="nav-link" onclick="toggleMenu()">Pricing</a></li>
+                    <li><a href="#support" class="nav-link" onclick="toggleMenu()">Support</a></li>
+                    <!-- Mobile only actions could go here -->
+                </ul>
+            </nav>
+            
+            <div class="nav-actions">
+                <a href="#" style="font-weight: 600; font-size: 14px;">Log in</a>
+                <a href="#" class="btn btn-primary">Get App</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container hero-grid">
+            <div class="hero-content">
+                <h1>Meet the bank of the future</h1>
+                <p>Experience seamless banking with next-generation technology designed to simplify your financial life. Secure, fast, and transparent.</p>
+                <div class="hero-cta">
+                    <a href="#" class="btn btn-primary">Get Started</a>
+                    <div class="trust-rating">
+                        <div class="stars">
+                            <i class="ph-fill ph-star"></i>
+                            <i class="ph-fill ph-star"></i>
+                            <i class="ph-fill ph-star"></i>
+                            <i class="ph-fill ph-star"></i>
+                            <i class="ph-fill ph-star"></i>
+                        </div>
+                        <span>4.9/5.0</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=800&q=80" alt="Happy customer with credit card">
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Grid -->
+    <section class="section" id="features">
+        <div class="container">
+            <div class="section-header">
+                <span class="badge">Why Choose Us</span>
+                <h2>More than just a simple credit card</h2>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 24 24"><path fill="none" stroke="#26df9b" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 2C6.582 2 3 5.545 3 9.919c0 1.493.417 2.89 1.143 4.081M17 5h-2c-.943 0-1.414 0-1.707.293S13 6.057 13 7v2c0 .943 0 1.414.293 1.707S14.057 11 15 11h2c.943 0 1.414 0 1.707-.293S19 9.943 19 9V7c0-.943 0-1.414-.293-1.707S17.943 5 17 5m-2.5 6v2m3-2v2m-3-10v2m3-2v2M13 6.5h-2m2 3h-2m10-3h-2m2 3h-2M6.383 17.098c-.092-.276-.138-.415-.133-.527a.6.6 0 0 1 .382-.53c.104-.041.25-.041.54-.041h7.656c.291 0 .436 0 .54.04a.6.6 0 0 1 .382.531c.005.112-.041.25-.133.527c-.17.511-.255.767-.386.974a2 2 0 0 1-1.2.869c-.238.059-.506.059-1.043.059H9.012c-.537 0-.806 0-1.043-.06a2 2 0 0 1-1.2-.868c-.131-.207-.216-.463-.386-.974M14 19l-.13.647c-.14.707-.211 1.06-.37 1.34a2 2 0 0 1-1.113.912C12.082 22 11.72 22 11 22s-1.082 0-1.387-.1a2 2 0 0 1-1.113-.913c-.159-.28-.23-.633-.37-1.34L8 19" color="currentColor"/></svg>
+                    </div>
+                    <h3>Innovation</h3>
+                    <p>We constantly update our features to ensure you have the cutting-edge financial tools at your fingertips.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 36 36"><path fill="#26df9b" d="M24.23 11.71a39.14 39.14 0 0 0-4.57-3.92a22.86 22.86 0 0 1 3.48-1.72c.32-.12.62-.21.92-.3a2.28 2.28 0 0 0 3.81-.46a3.31 3.31 0 0 1 1.92.84c1.19 1.19 1.22 3.59.1 6.58c.49.65.94 1.31 1.35 2c.17-.4.35-.79.49-1.18c1.47-3.85 1.28-7-.53-8.78a5.29 5.29 0 0 0-3.33-1.44a2.29 2.29 0 0 0-4.31.54c-.37.11-.74.22-1.13.37a25.79 25.79 0 0 0-4.57 2.35a26.21 26.21 0 0 0-4.58-2.39c-3.85-1.46-7-1.28-8.77.53c-1.66 1.67-1.93 4.44-.83 7.86a2.28 2.28 0 0 0 1.59 3.67c.32.61.67 1.22 1.06 1.82A25.54 25.54 0 0 0 4 22.66c-1.47 3.84-1.28 7 .53 8.77a5.63 5.63 0 0 0 4.12 1.51a13.34 13.34 0 0 0 4.65-1a26.21 26.21 0 0 0 4.58-2.35A25.79 25.79 0 0 0 22.43 32a14.16 14.16 0 0 0 3.65.9a2.3 2.3 0 0 0 4.38-.9a4.55 4.55 0 0 0 .74-.57c1.81-1.81 2-4.93.53-8.77a32.68 32.68 0 0 0-7.5-10.95ZM12.57 30.09c-3 1.15-5.45 1.13-6.65-.08s-1.23-3.62-.07-6.64a22.77 22.77 0 0 1 1.71-3.48a40.19 40.19 0 0 0 3.92 4.56c.43.43.87.85 1.31 1.25q.9-.46 1.83-1.05c-.58-.52-1.16-1-1.72-1.61a34 34 0 0 1-5.74-7.47a2.29 2.29 0 0 0-1.66-3.88c-.75-2.5-.62-4.49.43-5.54a3.72 3.72 0 0 1 2.72-.92a11.4 11.4 0 0 1 3.93.84a22.86 22.86 0 0 1 3.48 1.72a39.14 39.14 0 0 0-4.57 3.92c-.44.44-.87.9-1.29 1.36a20.27 20.27 0 0 0 1 1.85c.54-.61 1.09-1.21 1.68-1.8a36.33 36.33 0 0 1 5-4.17a36.88 36.88 0 0 1 4.95 4.17a36.26 36.26 0 0 1 4.17 5a37 37 0 0 1-4.17 5a30.68 30.68 0 0 1-10.26 6.97ZM29.79 30l-.16.13a2.27 2.27 0 0 0-3.5.72a12.57 12.57 0 0 1-3-.77a22 22 0 0 1-3.48-1.72a39.14 39.14 0 0 0 4.57-3.92a38.26 38.26 0 0 0 3.92-4.56a22.88 22.88 0 0 1 1.72 3.48C31 26.39 31 28.81 29.79 30Z" class="clr-i-solid clr-i-solid-path-1"/><circle cx="17.99" cy="18.07" r="3.3" fill="#26df9b" class="clr-i-solid clr-i-solid-path-2" transform="rotate(-9.22 17.955 18.05)"/><path fill="none" d="M0 0h36v36H0z"/></svg>
+                    </div>
+                    <h3>Technology</h3>
+                    <p>Built on a modern stack ensuring 99.99% uptime and lightning fast transactions globally.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                       <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 24 24" fill="#26df9b"><g fill="none" stroke="#26df9b" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M11.998 2C8.99 2 7.04 4.019 4.734 4.755c-.938.3-1.407.449-1.597.66c-.19.21-.245.519-.356 1.135c-1.19 6.596 1.41 12.694 7.61 15.068c.665.255.998.382 1.61.382s.946-.128 1.612-.383c6.199-2.373 8.796-8.471 7.606-15.067c-.111-.616-.167-.925-.357-1.136s-.658-.36-1.596-.659C16.959 4.019 15.006 2 11.998 2"/><path d="M10.337 10.38c-1.08 0-1.62.78-1.74 1.26s-.12 2.22-.048 2.94c.24.9.84 1.272 1.428 1.392c.54.048 2.82.03 3.48.03c.96.018 1.68-.342 1.98-1.422c.06-.36.12-2.34-.03-2.94c-.318-.96-1.11-1.26-1.71-1.26zm-.087-.421c0-.06.008-.406.01-.84c0-.398-.034-.78.156-1.13c.71-1.414 2.75-1.27 3.254.17c.087.237.093.612.09.96c-.003.443.006.84.006.84"/></g></svg>
+                    </div>
+                    <h3>Security</h3>
+                    <p>Bank-grade encryption and biometric verification keep your assets safer than a physical vault.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dark Services Section -->
+    <section class="dark-services" id="services">
+        <div class="container">
+            <div class="dark-grid">
+                <div class="service-info">
+                    <h2>Browse our set of banking services and offerings.</h2>
+                    <p>We provide a comprehensive suite of tools for personal and business finance management.</p>
+                    <a href="#" class="btn btn-lime">Get started</a>
+                </div>
+
+                <!-- Bento Grid Items -->
+                <div class="bento-card bento-lg glow">
+                    <div>
+                        <h3 style="margin-bottom: 10px;">Online Accounts</h3>
+                        <p style="color: #0b3928; font-size: 18px;">Beautifully designed online accounts that make managing your digital finances effortless.</p>
+                    </div>
+                    <div class="card-visual-mock">
+                         <img src="https://images.unsplash.com/photo-1692533801336-fb86a60f501f?q=80&w=687&auto=format&fit=crop" alt="Dashboard Interface">
+                    </div>
+                </div>
+
+                <div class="bento-card bento-sm-1 lime">
+                    <div style="flex: 1;">
+                         <h3 style="margin-bottom: 10px;">Mobile Payments</h3>
+                         <p style="font-size: 16px; font-weight: 400; color: #c3c3c3;">Seamless mobile payments powered by advanced security and real-time processing.</p>
+                    </div>
+                    <i class="ph ph-contactless-payment" style="font-size: 40px;"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Business Split Section -->
+    <section class="section" id="business">
+        <div class="container split-section">
+            <div class="split-content">
+                <span class="badge">For Business</span>
+                <h2>Our services are designed for businesses of all sizes</h2>
+                <p>From freelancers to enterprises, our scalable API and dashboard solutions help you manage payroll, expenses, and invoices effortlessly.</p>
+                <ul style="margin-bottom: 30px;">
+                    <li style="margin-bottom: 10px; display: flex; gap: 10px; align-items: center;">
+                        <i class="ph-bold ph-check" style="color: var(--color-lime); font-size: 20px;"></i>
+                         Real-time analytics
+                    </li>
+                    <li style="margin-bottom: 10px; display: flex; gap: 10px; align-items: center;">
+                        <i class="ph-bold ph-users" style="color: var(--color-lime); font-size: 20px;"></i>
+                        Multi-user access
+                    </li>
+                    <li style="margin-bottom: 10px; display: flex; gap: 10px; align-items: center;">
+                        <i class="ph-bold ph-cardholder" style="color: var(--color-lime); font-size: 20px;"></i>
+                        Cardless transactions
+                    </li>
+                    <li style="margin-bottom: 10px; display: flex; gap: 10px; align-items: center;">
+                        <i class="ph-bold ph-globe" style="color: var(--color-lime); font-size: 20px;"></i>
+                        International Payments
+                    </li>
+                </ul>
+                <a href="#" class="btn btn-primary">Learn More</a>
+            </div>
+            <div class="split-visual">
+                <img src="https://images.unsplash.com/photo-1681577997228-8c558352ffa7?q=80&w=1332&auto=format&fit=crop" alt="Business meeting">
+            </div>
+        </div>
+    </section>
+
+    <!-- App Feature Section (Reverse Split) -->
+    <section class="section" style="padding-top: 0;">
+        <div class="container split-section reverse">
+            <div class="split-visual">
+                <img src="https://images.unsplash.com/photo-1685094488656-9231107be07f?q=80&w=1170&auto=format&fit=crop" alt="Mobile app usage">
+            </div>
+            <div class="split-content">
+                <h2>At CreditCore we go the extra mile to financially assist you</h2>
+                <p>Our AI-driven financial assistant analyzes your spending habits to suggest budgets and savings goals tailored to your lifestyle.</p>
+                <a href="#" style="color: var(--color-dark-green); font-weight: 700; border-bottom: 2px solid var(--color-lime);">Read Success Stories</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats / Wallet Section -->
+    <section class="section">
+        <div class="container">
+            <div class="text-center" style="margin-bottom: 40px;">
+                <h2>Upgrade your wallet with<br> the next-gen card</h2>
+            </div>
+            <div class="stats-container">
+                <div class="stat-column">
+                    <div class="stat-item">
+                        <h3>3%</h3>
+                        <p class="label">Cash back</p>
+                        <p class="desc">Enjoy lightning-fast payouts with only a 3% cash processing fee — simple, transparent.</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>0%</h3>
+                        <p class="label">Hidden fees</p>
+                        <p class="desc">What you see is what you get. We never charge hidden fees, surprise costs, or fine-print add-ons — ever.</p>
+                    </div>
+                </div>
+               
+                 
+                <div class="phone-center">
+                    <!-- Replace src with your image -->
+                    <img src="https://imgs.search.brave.com/TtndfzNMoFBrGfVI640MeA6pbcMd6_gcp6nc4LetI48/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly96ZXJv/c2xlZXBzLmNvbS91/cGxvYWRzL2lQaG9u/ZV9Ib21lX1NjcmVl/bi5qcGc" alt="Mobile Wallet App Mockup" style="opacity: 0.8;">
+                </div>
+
+                <div class="stat-column">
+                    <div class="stat-item">
+                        <h3>10M+</h3>
+                        <p class="label">Active Users</p>
+                        <p class="desc">Join a thriving community of over 10 million active users who trust our platform every single day.</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>99%</h3>
+                        <p class="label">Satisfaction</p>
+                        <p class="desc">With a 99% satisfaction rate, our users love the speed and reliability we bring to their financial experience.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="section testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2>What they say about us</h2>
+            </div>
+            <div class="testimonial-grid">
+                <div class="test-card">
+                    <i class="ph-fill ph-quotes quote-icon"></i>
+                    <p class="test-text">"CreditCore revolutionized how I handle my freelance finances. The automation features are a lifesaver."</p>
+                    <div class="user-profile">
+                        <div class="avatar">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80" alt="User Avatar">
+                        </div>
+                        <div class="user-info">
+                            <h5>Sarah Jenkins</h5>
+                            <span>Freelance Designer</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="test-card">
+                    <i class="ph-fill ph-quotes quote-icon"></i>
+                    <p class="test-text">"Finally a bank app that feels like it belongs in 2025. Fast, beautiful, and extremely secure."</p>
+                    <div class="user-profile">
+                        <div class="avatar">
+                             <img src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&w=100&q=80" alt="User Avatar">
+                        </div>
+                        <div class="user-info">
+                            <h5>Mike Ross</h5>
+                            <span>Entrepreneur</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="test-card">
+                    <i class="ph-fill ph-quotes quote-icon"></i>
+                    <p class="test-text">"The cashback rewards are actual cash, not useless points. Best decision I made this year."</p>
+                    <div class="user-profile">
+                        <div class="avatar">
+                             <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=100&q=80" alt="User Avatar">
+                        </div>
+                        <div class="user-info">
+                            <h5>Elena Rodriguez</h5>
+                            <span>Marketing Lead</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="section" id="support">
+        <div class="container">
+            <div class="section-header">
+                <h2>Have questions?</h2>
+            </div>
+            <div class="faq-grid">
+                <div class="accordion-group">
+                    <div class="accordion-item active">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            How do I open an account?
+                            <i class="ph ph-plus accordion-icon"></i>
+                        </div>
+                        <div class="accordion-body">
+                            Opening an account takes less than 5 minutes. Simply download our app, verify your identity with an ID, and you're ready to go.
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            Are there any monthly fees?
+                            <i class="ph ph-plus accordion-icon"></i>
+                        </div>
+                        <div class="accordion-body">
+                            Our standard plan is completely free. We offer premium tiers with extra benefits for a small monthly fee.
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            Is my money safe?
+                            <i class="ph ph-plus accordion-icon"></i>
+                        </div>
+                        <div class="accordion-body">
+                            Yes, your deposits are insured up to $250,000 and we use military-grade encryption for all transactions.
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            Can I use CreditCore abroad?
+                            <i class="ph ph-plus accordion-icon"></i>
+                        </div>
+                        <div class="accordion-body">
+                            Absolutely. You get the real exchange rate with no hidden markup fees when spending abroad.
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-visual">
+                    <img src="https://images.unsplash.com/photo-1500731250117-4b0cbb8b276a?q=80&w=1068&auto=format&fit=crop" alt="Customer Support">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Banner & Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="cta-banner">
+                <h2>Create your account today!</h2>
+                <p>Join millions of users who trust CreditCore.</p>
+                <button class="btn btn-lime" style="position: relative; z-index: 2;">Get Started Now</button>
+            </div>
+
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#" class="logo">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 26 26" fill="#008051"><g fill="#008051" fill-rule="evenodd" clip-rule="evenodd"><path d="M13 5.682L6.938 9.5h12.124L13 5.682Zm.267-1.014a.5.5 0 0 0-.533 0L4.939 9.577c-.424.267-.235.923.267.923h15.588c.502 0 .691-.656.267-.923l-7.794-4.91ZM5 20a.5.5 0 0 1 .5-.5h15a.5.5 0 0 1 0 1h-15A.5.5 0 0 1 5 20Zm1.5-8.5a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0v-6a.5.5 0 0 1 .5-.5Zm3 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0v-6a.5.5 0 0 1 .5-.5Zm3 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0v-6a.5.5 0 0 1 .5-.5Zm3 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0v-6a.5.5 0 0 1 .5-.5Zm3 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0v-6a.5.5 0 0 1 .5-.5Z"/><path d="M13 24.5c6.351 0 11.5-5.149 11.5-11.5S19.351 1.5 13 1.5S1.5 6.649 1.5 13S6.649 24.5 13 24.5Zm0 1c6.904 0 12.5-5.596 12.5-12.5S19.904.5 13 .5S.5 6.096.5 13S6.096 25.5 13 25.5Z"/></g></svg>
+                        CreditCore
+                    </a>
+                    <p>Empowering your financial journey with technology and trust.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Affiliate</a></li>
+                        <li><a href="#">Product news</a></li>
+                        <li><a href="#">Press</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="#">Features</a></li>
+                        <li><a href="#">Pricing</a></li>
+                        <li><a href="#">Credit Cards</a></li>
+                        <li><a href="#">Go Premium</a></li>
+                        <li><a href="#">Business Platinum</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Status</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy</a></li>
+                        <li><a href="#">Terms</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <span>&copy; 2025 CreditCore Inc. All rights reserved.</span>
+                <span class="designer-credit">Designed by Lefa Mofokeng</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        function toggleAccordion(element) {
+            const item = element.parentElement;
+            const isActive = item.classList.contains('active');
+            
+            // Close all items
+            document.querySelectorAll('.accordion-item').forEach(acc => {
+                acc.classList.remove('active');
+            });
+
+            // If it wasn't active before, open it
+            if (!isActive) {
+                item.classList.add('active');
+            }
+        }
+
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+            
+            const icon = document.querySelector('.menu-toggle i');
+            if (navLinks.classList.contains('active')) {
+                icon.classList.remove('ph-list');
+                icon.classList.add('ph-x');
+            } else {
+                icon.classList.remove('ph-x');
+                icon.classList.add('ph-list');
+            }
+        }
+    </script>
+</body>
+</html>
